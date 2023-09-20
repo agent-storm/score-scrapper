@@ -29,6 +29,5 @@ public class ScoreScrapper {
 
     }
 
-    //<a target="_blank" href="/rankings/START99D" data-bindattr-500="500" class="button blue fnone">Go to Contest
-    // Ranks</a>
+
 }
