@@ -9,7 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
+ 
 
 public class ScoreScrapper {
     public static void main(String[] args) throws Exception {
@@ -53,6 +53,4 @@ public class ScoreScrapper {
         WebElement filterApplyBtn = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
         filterApplyBtn.click();
     }
-
-
 }
