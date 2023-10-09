@@ -35,7 +35,8 @@ public class ScoreScrapper {
         ArrayList<String> wid = new ArrayList<String>(driv.getWindowHandles());
         System.out.println(wid);
         driv.switchTo().window(wid.get(1));
-        Thread.sleep(1000);
+        Thread.sleep(4000);
+        driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]")));
         WebElement filterByBtn = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]")));
         filterByBtn.click();
         bot.keyPress(KeyEvent.VK_DOWN);
