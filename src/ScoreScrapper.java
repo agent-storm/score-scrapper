@@ -1,10 +1,10 @@
+
 import java.awt.Robot;
+import java.lang.Runtime;
 import java.time.Duration;
 import java.util.ArrayList;
 import org.openqa.selenium.By;
 import java.awt.event.KeyEvent;
-import java.io.File;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -34,7 +34,6 @@ public class ScoreScrapper {
         contestRanksBtn.click();
         Thread.sleep(1000);
         ArrayList<String> wid = new ArrayList<String>(driv.getWindowHandles());
-        System.out.println(wid);
         driv.switchTo().window(wid.get(1));
         Thread.sleep(10000);
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]")));
@@ -49,14 +48,13 @@ public class ScoreScrapper {
         Thread.sleep(3000);
         act.moveToElement(filterInputTextArea,5,40).build().perform();
         Thread.sleep(1000);
-        // act.contextClick().build().perform();
         act.click().build().perform();
         Thread.sleep(1000);
         WebElement filterApplyBtn = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
         filterApplyBtn.click();
-        System.out.println(driv.getCurrentUrl());
-        String[] command = {"python Scrapper.py", driv.getCurrentUrl()};
-        ProcessBuilder builder = new ProcessBuilder(command);
-        builder = builder.directory(new File("directory_location"));
+        
+        String command = "python score-scrapper\\src\\Scrapper.py "+driv.getCurrentUrl();
+        Runtime.getRuntime().exec(command);
+
     }
 }
