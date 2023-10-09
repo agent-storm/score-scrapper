@@ -3,6 +3,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import org.openqa.selenium.By;
 import java.awt.event.KeyEvent;
+import java.io.File;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,13 +20,12 @@ public class ScoreScrapper {
         WebDriver driv = new ChromeDriver();
         Actions act = new Actions(driv);
         Robot bot = new Robot();
-
         driv.manage().window().maximize();
 
         driv.get("https://www.codechef.com/START99");
 
         Thread.sleep(1000);
-        WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(10));
+        WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(30));
         WebElement divsionSelector = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"ember350\"]")));
         Thread.sleep(2000);
         divsionSelector.click();
@@ -35,7 +36,7 @@ public class ScoreScrapper {
         ArrayList<String> wid = new ArrayList<String>(driv.getWindowHandles());
         System.out.println(wid);
         driv.switchTo().window(wid.get(1));
-        Thread.sleep(4000);
+        Thread.sleep(10000);
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]")));
         WebElement filterByBtn = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]")));
         filterByBtn.click();
@@ -45,7 +46,7 @@ public class ScoreScrapper {
         Thread.sleep(1000);
         WebElement filterInputTextArea = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[1]/div/div/div[3]/div/div/div/input")));
         filterInputTextArea.sendKeys("CMR Institute of Technology, Hyderabad");
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         act.moveToElement(filterInputTextArea,5,40).build().perform();
         Thread.sleep(1000);
         // act.contextClick().build().perform();
@@ -53,5 +54,9 @@ public class ScoreScrapper {
         Thread.sleep(1000);
         WebElement filterApplyBtn = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
         filterApplyBtn.click();
+        System.out.println(driv.getCurrentUrl());
+        String[] command = {"python Scrapper.py", driv.getCurrentUrl()};
+        ProcessBuilder builder = new ProcessBuilder(command);
+        builder = builder.directory(new File("directory_location"));
     }
 }
