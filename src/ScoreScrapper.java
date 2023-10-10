@@ -1,7 +1,9 @@
 
 import java.awt.Robot;
 import java.lang.Runtime;
+import java.nio.file.Path;
 import java.time.Duration;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import org.openqa.selenium.By;
 import java.awt.event.KeyEvent;
@@ -16,7 +18,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 public class ScoreScrapper {
     public static void main(String[] args) throws Exception {
         // TODOPerform the following action for all divisions of the contest.
-        System.setProperty("webdriver.chrome.driver", "D:\\Projects\\ScoreScrapper\\chromedriver-win64\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "score-scrapper\\assets\\chromedriver.exe");
         WebDriver driv = new ChromeDriver();
         Actions act = new Actions(driv);
         Robot bot = new Robot();
@@ -52,9 +54,11 @@ public class ScoreScrapper {
         Thread.sleep(1000);
         WebElement filterApplyBtn = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
         filterApplyBtn.click();
-        
-        String command = "python score-scrapper\\src\\Scrapper.py "+driv.getCurrentUrl();
-        Runtime.getRuntime().exec(command);
+        Thread.sleep(5000);
+        WebElement rankList = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody"));
+        // TODO Go through all pages in ranks page and add them to Ranks.txt file
+        Path contentsFile = Path.of("score-scrapper\\output-files\\Ranks.txt");
+        Files.writeString(contentsFile, rankList.getAttribute("innerHTML"));
 
     }
 }
