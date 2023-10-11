@@ -1,12 +1,15 @@
 
 import java.awt.Robot;
-import java.lang.Runtime;
+// import java.lang.Runtime;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import org.openqa.selenium.By;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -55,10 +58,31 @@ public class ScoreScrapper {
         WebElement filterApplyBtn = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
         filterApplyBtn.click();
         Thread.sleep(5000);
-        WebElement rankList = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody"));
         // TODO Go through all pages in ranks page and add them to Ranks.txt file
-        Path contentsFile = Path.of("score-scrapper\\output-files\\Ranks.txt");
-        Files.writeString(contentsFile, rankList.getAttribute("innerHTML"));
 
+        //Testing code
+        WebElement pagesList = driv.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/table/tfoot/tr/td/div[1]/nav/ul"));
+        String temp[] = pagesList.getText().split("\n");
+        int max = 0;
+        for (int i = 0; i < temp.length; i++) {
+            int t = Integer.parseInt(temp[i]);
+            if(t>max)
+                max = t;
+        }
+        System.out.println(max);
+        BufferedWriter contentsFile = new BufferedWriter(new FileWriter("score-scrapper\\output-files\\Ranks.txt",true));
+        WebElement nextPagebtn = driv.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/table/tfoot/tr/td/div[1]/nav/ul/li[5]/button"));
+        while(max-- > 1){
+            WebElement rankList = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody"));
+            // Files.writeString(contentsFile, rankList.getAttribute("innerHTML"));
+            contentsFile.write(rankList.getAttribute("innerHTML"));
+            Thread.sleep(1000);
+            nextPagebtn.click();
+            Thread.sleep(5000);
+            System.out.println(driv.getCurrentUrl());
+            // TODO Driver.get.CurrentURL.
+        }
+        //Testing code end
+        contentsFile.close();
     }
 }
