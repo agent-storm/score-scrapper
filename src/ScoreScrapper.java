@@ -1,11 +1,11 @@
 
 import java.awt.Robot;
 // import java.lang.Runtime;
-import java.nio.file.Path;
 import java.time.Duration;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -25,12 +25,12 @@ public class ScoreScrapper {
         WebDriver driv = new ChromeDriver();
         Actions act = new Actions(driv);
         Robot bot = new Robot();
+        WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(30));
         driv.manage().window().maximize();
 
         driv.get("https://www.codechef.com/START99");
 
         Thread.sleep(1000);
-        WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(30));
         WebElement divsionSelector = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"ember350\"]")));
         Thread.sleep(2000);
         divsionSelector.click();
@@ -58,9 +58,8 @@ public class ScoreScrapper {
         WebElement filterApplyBtn = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
         filterApplyBtn.click();
         Thread.sleep(5000);
-        // TODO Go through all pages in ranks page and add them to Ranks.txt file
 
-        //Testing code
+        // Data reading part.
         WebElement pagesList = driv.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/table/tfoot/tr/td/div[1]/nav/ul"));
         String temp[] = pagesList.getText().split("\n");
         int max = 0;
@@ -69,20 +68,25 @@ public class ScoreScrapper {
             if(t>max)
                 max = t;
         }
-        System.out.println(max);
-        BufferedWriter contentsFile = new BufferedWriter(new FileWriter("score-scrapper\\output-files\\Ranks.txt",true));
-        WebElement nextPagebtn = driv.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/table/tfoot/tr/td/div[1]/nav/ul/li[5]/button"));
+        BufferedWriter contentsFile = new BufferedWriter(new FileWriter("score-scrapper\\output-files\\raw_html_scores.txt",true));
+        Thread.sleep(1000);
+        int pageCount = 1;
         while(max-- > 1){
-            WebElement rankList = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody"));
-            // Files.writeString(contentsFile, rankList.getAttribute("innerHTML"));
-            contentsFile.write(rankList.getAttribute("innerHTML"));
+            System.out.println("=> Reading page no:"+pageCount);
+            driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody")));
+            WebElement ranksList = driv.findElement(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody"));
+            contentsFile.write(ranksList.getAttribute("innerHTML"));
+            System.out.println("=> Write Complete.");
             Thread.sleep(1000);
+            WebElement nextPagebtn = driv.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/table/tfoot/tr/td/div[1]/nav/ul/li[5]/button"));
             nextPagebtn.click();
             Thread.sleep(5000);
-            System.out.println(driv.getCurrentUrl());
-            // TODO Driver.get.CurrentURL.
+            pageCount++;
         }
-        //Testing code end
+        System.out.println("=> Reading page no:"+(pageCount+1));
+        WebElement ranksList = driv.findElement(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody"));
+        contentsFile.write(ranksList.getAttribute("innerHTML"));
         contentsFile.close();
+        System.out.println("------------ Finished loading raw HTML to raw_html_scores.txt ------------");
     }
 }
