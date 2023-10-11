@@ -1,15 +1,11 @@
 
 import java.awt.Robot;
-// import java.lang.Runtime;
+import java.io.FileWriter;
 import java.time.Duration;
 import java.util.ArrayList;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-
-import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
-
+import org.openqa.selenium.By;
+import java.awt.event.KeyEvent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,7 +23,7 @@ public class ScoreScrapper {
         Robot bot = new Robot();
         WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(30));
         driv.manage().window().maximize();
-
+        // May be use multithreading to process all 4 divisions at the same time.
         driv.get("https://www.codechef.com/START99");
 
         Thread.sleep(1000);
