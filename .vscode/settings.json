@@ -3,6 +3,7 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "d:\\Projects\\ScoreScrapper\\selenium-server-4.12.1.jar"
+        "d:\\Projects\\ScoreScrapper\\selenium-server-4.12.1.jar",
+        "assets/selenium-server-4.14.1.jar"
     ]
 }

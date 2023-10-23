@@ -33,15 +33,15 @@ public class ScoreScrapper extends Thread{
     public void run(){
         System.out.println(this.getName()+" Started.");
         try{Reader();}
-        catch(Exception e){System.out.println(e);}
+        catch(Exception e){}
     }
 
     public void Reader() throws Exception{
 
-        System.setProperty("webdriver.chrome.driver", "score-scrapper\\assets\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "assets\\chromedriver.exe");
         WebDriver driv = new ChromeDriver();
         Actions act = new Actions(driv);
-        WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(30));
+        WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(10));
         driv.manage().window().maximize();
         driv.get(pageLink);
         String divBtnXpath = "//*[@id='#']"; 
@@ -72,33 +72,44 @@ public class ScoreScrapper extends Thread{
         act.click().build().perform();
         Thread.sleep(1000);
         WebElement filterApplyBtn = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
+        if(!filterApplyBtn.isEnabled()){
+            System.out.println("The following div does not have data:"+this.divName);
+            this.interrupt();
+        }
         filterApplyBtn.click();
         Thread.sleep(5000);
         // Data reading part.
-        WebElement pagesList = driv.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/table/tfoot/tr/td/div[1]/nav/ul"));
-        String temp[] = pagesList.getText().split("\n");
-        int max = 0;
-        for (int i = 0; i < temp.length; i++) {
-            int t = Integer.parseInt(temp[i]);
-            if(t>max)
-                max = t;
-        }
-        String filePath = "score-scrapper\\output-files\\raw_html_"+divName+"_scores.txt";
+        WebElement nextPagebtn = driv.findElement(By.className("_next-pagination__item_ehs9q_89"));
+        String filePath = "output-files\\raw_html_"+divName+"_scores.txt";
         BufferedWriter contentsFile = new BufferedWriter(new FileWriter(filePath,true));
-        Thread.sleep(1000);
-        System.out.println(divName+" max:"+max);
-        if(max!=1){
-            while(max-- > 1){
-                driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody")));
-                WebElement ranksList = driv.findElement(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody"));
-                contentsFile.write(ranksList.getAttribute("innerHTML"));
-                Thread.sleep(1000);
-                WebElement nextPagebtn = driv.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/table/tfoot/tr/td/div[1]/nav/ul/li[5]/button"));
-                nextPagebtn.click();
-                Thread.sleep(5000);
+        if (nextPagebtn.isEnabled()){
+            WebElement pagesList = driv.findElement(By.className("MuiPagination-ul"));
+            String temp[] = pagesList.getText().split("\n");
+            int max = 0;
+            for (int i = 0; i < temp.length; i++) {
+                try{ 
+                    int t = Integer.parseInt(temp[i]); 
+                    if(t>max)
+                    max = t;
+                }
+                catch(Exception e){}
+                
+            }
+            Thread.sleep(3000);
+            if(max>1){
+                while(max > 1){
+                    WebElement ranksList = driv.findElement(By.className("MuiTableBody-root"));
+                    contentsFile.write(ranksList.getAttribute("innerHTML"));
+                    Thread.sleep(1000);
+                    driverWait.until(ExpectedConditions.elementToBeClickable(By.className("_next-pagination__item_ehs9q_89")));
+                    WebElement nextPagebtnRef = driv.findElement(By.className("_next-pagination__item_ehs9q_89"));
+                    nextPagebtnRef.click();
+                    Thread.sleep(5000);
+                    max-=1;
+                }
             }
         }
-        WebElement ranksList = driv.findElement(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[2]/div/div[3]/div[3]/div/div[2]/table/tbody"));
+        WebElement ranksList = driv.findElement(By.className("MuiTableBody-root"));
         contentsFile.write(ranksList.getAttribute("innerHTML"));
         contentsFile.close();
         System.out.println("------------ Finished loading raw HTML to raw_html_"+divName+"_scores.txt ------------");
@@ -110,9 +121,13 @@ public class ScoreScrapper extends Thread{
         ScoreScrapper t2 = new ScoreScrapper("div-2",link);
         ScoreScrapper t3 = new ScoreScrapper("div-3",link);
         ScoreScrapper t4 = new ScoreScrapper("div-4",link);
+        // Thread.sleep(1000);
         // t1.start();
+        Thread.sleep(1000);
         t2.start();
+        Thread.sleep(1000);
         t3.start();
+        Thread.sleep(1000);
         t4.start();
     }
 }
