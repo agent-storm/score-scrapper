@@ -173,7 +173,7 @@ public class ScoreScrapper extends Thread{
     }
     public static void main(String[] args) throws Exception{
         // Link to be visited
-        String link = "https://www.codechef.com/START99";
+        String link = "https://www.codechef.com/START103";
 
         // Create four different Threads for each Division in CodeChef.
 
