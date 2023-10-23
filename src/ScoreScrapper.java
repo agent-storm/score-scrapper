@@ -24,6 +24,7 @@ Contace me
 Current file repo: https://github.com/agent-storm/score-scrapper
 */ 
 
+// TODO Add a progress bar to the console.
 import java.io.FileWriter;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class ScoreScrapper extends Thread{
         // Basic selenium initialisations.
         System.setProperty("webdriver.chrome.driver", "assets\\chromedriver.exe");
         WebDriver driv = new ChromeDriver();
+        
         Actions act = new Actions(driv);
         WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(10));
         driv.manage().window().maximize();
@@ -169,7 +171,7 @@ public class ScoreScrapper extends Thread{
         // Close the file and print the action in console.
         contentsFile.close();
         System.out.println("------------ Finished loading raw HTML to raw_html_"+divName+"_scores.txt ------------");
-        driv.quit(); // Close the browser.
+        driv.quit(); // Close the browser.        
     }
     public static void main(String[] args) throws Exception{
         // Link to be visited
@@ -185,11 +187,18 @@ public class ScoreScrapper extends Thread{
 
         // Thread.sleep(1000);
         // t1.start();
-        Thread.sleep(1000);
-        t2.start();
+        // Thread.sleep(1000);
+        // t2.start();
         Thread.sleep(1000);
         t3.start();
+        // Thread.sleep(1000);
+        // t4.start();
+        
+        // Sleep until all the threads finish execution.
+        while((t2.isAlive() || t3.isAlive() || t4.isAlive())){Thread.sleep(1000);}
+        // Call the python Script after execution.
+        Process p = Runtime.getRuntime().exec("python src//Processor.py");
         Thread.sleep(1000);
-        t4.start();
+        p.destroy();
     }
 }
