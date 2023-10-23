@@ -187,12 +187,12 @@ public class ScoreScrapper extends Thread{
 
         // Thread.sleep(1000);
         // t1.start();
-        // Thread.sleep(1000);
-        // t2.start();
+        Thread.sleep(1000);
+        t2.start();
         Thread.sleep(1000);
         t3.start();
-        // Thread.sleep(1000);
-        // t4.start();
+        Thread.sleep(1000);
+        t4.start();
         
         // Sleep until all the threads finish execution.
         while((t2.isAlive() || t3.isAlive() || t4.isAlive())){Thread.sleep(1000);}
