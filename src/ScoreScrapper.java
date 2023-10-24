@@ -21,7 +21,8 @@ Contace me
 @ gujarathisaisrinith@gmail.com
 @ https://github.com/agent-storm
 
-Current file repo: https://github.com/agent-storm/score-scrapper
+Current file repo: 
+https://github.com/agent-storm/score-scrapper
 */ 
 
 // TODO Add a progress bar to the console.
@@ -69,7 +70,6 @@ public class ScoreScrapper extends Thread{
         // Basic selenium initialisations.
         System.setProperty("webdriver.chrome.driver", "assets\\chromedriver.exe");
         WebDriver driv = new ChromeDriver();
-        
         Actions act = new Actions(driv);
         WebDriverWait driverWait = new WebDriverWait(driv, Duration.ofSeconds(10));
         driv.manage().window().maximize();
@@ -81,43 +81,49 @@ public class ScoreScrapper extends Thread{
         Thread.sleep(1000);
         // Selecting the Division button and clicking it.
         WebElement divsionSelector = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath(divBtnXpath)));
+        driverWait.until(ExpectedConditions.elementToBeClickable(divsionSelector));
         Thread.sleep(2000);
         divsionSelector.click();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         // Clicking the 'contest-ranks' button to go to the contest ranks.
         WebElement contestRanksBtn = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='contest-ranks']/a")));
         contestRanksBtn.click();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         // Getting the current windows list from chrome and switching the window to new opened window(ranks-list)
         ArrayList<String> wid = new ArrayList<String>(driv.getWindowHandles());
         driv.switchTo().window(wid.get(1));
         Thread.sleep(2000);
         // Selecting the filte button and clicking it 
-        driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]")));
         WebElement filterByBtn = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]")));
+        driverWait.until(ExpectedConditions.elementToBeClickable(filterByBtn));
         filterByBtn.click();
-        Thread.sleep(1000);
-        // Now selecting the "Institute" option fron the drop down menu and clicking it.
+        Thread.sleep(2000);
+        // Now selecting the "Institute" option fron the drop down menu and clicking it
+        driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[3]/div[3]/ul/li[2]")));
         WebElement institutionOption = driv.findElement(By.xpath("/html/body/div[3]/div[3]/ul/li[2]"));
         institutionOption.click();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         // Selecting the text box for filter options and entering the deesired text.
         WebElement filterInputTextArea = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[1]/div/div/div[3]/div/div/div/input")));
+        Thread.sleep(1000);
+        filterInputTextArea.click();
+        Thread.sleep(1000);
         filterInputTextArea.sendKeys("CMR Institute of Technology, Hyderabad");
-        Thread.sleep(3000);
+        Thread.sleep(5000);
         // Using Action class create a mouse motion and click on the option that is displayed
         // after desired text in entered into the filter text box. We offset the mouse location to properly 
         // land on the desired location.
         act.moveToElement(filterInputTextArea,5,40).build().perform();
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         act.click().build().perform();
         Thread.sleep(1000);
         // Select and click on the Apply button to apply the filters.
-        WebElement filterApplyBtn = driv.findElement(By.xpath("//*[@id='root']/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
+        WebElement filterApplyBtn = driv.findElement(By.className("_apply_button_uhw2a_84"));
         // In some cases the desired filter is not applciable for a Division so the Apply button will remain 
         // Disabled, we check this and make our move accordingly.
-        if(!filterApplyBtn.isEnabled()){
+        if(!(filterApplyBtn.isEnabled())){
             System.out.println("The following div does not have data:"+this.divName);
+            driv.quit();
             this.interrupt();
         }
         filterApplyBtn.click();
@@ -175,7 +181,7 @@ public class ScoreScrapper extends Thread{
     }
     public static void main(String[] args) throws Exception{
         // Link to be visited
-        String link = "https://www.codechef.com/START103";
+        String link = "https://www.codechef.com/START100";
 
         // Create four different Threads for each Division in CodeChef.
 
