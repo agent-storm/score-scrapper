@@ -133,7 +133,7 @@ public class ScoreScrapper extends Thread{
         // Find the next-page-button that is used to go to the next page of results/rankings.1
         WebElement nextPagebtn = driv.findElement(By.className("_next-pagination__item_ehs9q_89"));
         // Create and open a file with the specific file name.
-        String filePath = "output-files\\raw_html_"+divName+"_scores.txt";
+        String filePath = "output-files\\temp_files\\raw_html_"+divName+"_scores.txt";
         BufferedWriter contentsFile = new BufferedWriter(new FileWriter(filePath,true));
         // In some cases the ranks might only be one page, soo we check this and proceed accordingly.
         // If the button is not enabled, we will skip the statments in the if block below.
@@ -204,7 +204,9 @@ public class ScoreScrapper extends Thread{
         // Sleep until all the threads finish execution.
         while((t2.isAlive() || t3.isAlive() || t4.isAlive())){Thread.sleep(1000);}
         // Call the python Script after execution.
-        Process p = Runtime.getRuntime().exec("python src//Processor.py");
+        Thread.sleep(5000);
+        String command = "python src//Processor.py";
+        Process p = Runtime.getRuntime().exec(command);
         Thread.sleep(1000);
         p.destroy();
     }
