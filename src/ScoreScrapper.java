@@ -61,7 +61,7 @@ public class ScoreScrapper extends Thread{
     // Run method for threads.
     // Calles the Reader method.
     public void run(){
-        System.out.println(this.getName()+" Started.");
+        System.out.println("Thread "+this.divName+" Started.");
         try{Reader();}
         catch(Exception e){}
     }
@@ -182,7 +182,7 @@ public class ScoreScrapper extends Thread{
     }
     public static void main(String[] args) throws Exception{
         // Link to be visited
-        String link = "https://www.codechef.com/START101";
+        String link = "https://www.codechef.com/START99";
 
         // Create four different Threads for each Division in CodeChef.
 
@@ -202,7 +202,29 @@ public class ScoreScrapper extends Thread{
         t4.start();
         
         // Sleep until all the threads finish execution.
-        while((t2.isAlive() || t3.isAlive() || t4.isAlive())){Thread.sleep(1000);}
+        String loading = " Processing [                    ]";
+        int flag=0,count=1;
+        
+        while((t2.isAlive() || t3.isAlive() || t4.isAlive())){
+            Thread.sleep(25);
+            if(flag == 0){
+                StringBuffer out = new StringBuffer(loading);
+                out.setCharAt(count, '=');
+                out.append("\r");
+                System.out.print(out);
+                count+=1;
+                if (count >= 32){flag = 1;}
+            }
+            else if(flag == 1){
+                StringBuffer out = new StringBuffer(loading);
+                out.setCharAt(count, '=');
+                out.append("\r");
+                System.out.print(out);
+                count-=1;
+                if(count == 13){flag = 0;}
+            }
+        }
+        System.out.println("Data Colletion complete\nCalling Python Script now.");
         // Call the python Script after execution.
         Thread.sleep(5000);
         String command = "python src//Processor.py";
