@@ -1,6 +1,10 @@
 # score-scrapper
 ### NOTE: The project is still in progress.
 &ensp;&ensp;The main goal of the project is to return a file(s) containing data about the contest held by codechef known as STARTERS. Basically by usuing selenium I can get the contest rankings site and choose my college as the filter, then by using Beautiful Soup (Python) I can get the raw HTML data and process it furhter for my needs, then finally by using xlsxwriter I can store the data in the form of xlsx sheets for each Division of the contest.
+## Sample Output:
+![image](https://github.com/agent-storm/score-scrapper/assets/117740222/7b5ffb45-e2f1-40f4-978b-775f3fce997b)
+
+
 ## Key Points:
 ----------------
 - Scrapping of all four divisions is possible. [GOTO: Main Method]
@@ -29,7 +33,7 @@ Step by Step detailed explaination of the working can be found with in the code 
 &ensp;&ensp;For now there is no interactive method for using the program but in the future I will add a GUI Interface to make things simple and easy to use. To use the programm as is, you need to go to the main method in the ScoreScrapper.java file and edit the `link` variable to the desired link that only points any START contest ex: `https://codechef.com/START99`
 ## NOTICE
 &ensp;&ensp;You must add the selenium server jar file to the "Referenced Libraries" folder of your Java project.
-  
+
 ## Folder Structure
 
 The workspace contains two folders by default, where:
