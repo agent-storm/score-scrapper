@@ -182,18 +182,18 @@ public class ScoreScrapper extends Thread{
     }
     public static void main(String[] args) throws Exception{
         // Link to be visited
-        String link = "https://www.codechef.com/START99";
+        String link = "https://www.codechef.com/START101";
 
         // Create four different Threads for each Division in CodeChef.
 
-        ScoreScrapper t1 = new ScoreScrapper("div-1",link);
+        // ScoreScrapper t1 = new ScoreScrapper("div-1",link);
         ScoreScrapper t2 = new ScoreScrapper("div-2",link);
         ScoreScrapper t3 = new ScoreScrapper("div-3",link);
         ScoreScrapper t4 = new ScoreScrapper("div-4",link);
         // Start each Thread by a one second delay.
 
-        Thread.sleep(1000);
-        t1.start();
+        // Thread.sleep(1000);
+        // t1.start();
         Thread.sleep(1000);
         t2.start();
         Thread.sleep(1000);

@@ -6,6 +6,7 @@ class Scrapper:
     def __init__(self):
         self.list_of_files = os.listdir("output-files/temp_files")
         self.FileCreator()
+        
     def FileCreator(self):
         os.chdir("output-files")
         for fileName in self.list_of_files:
@@ -15,9 +16,7 @@ class Scrapper:
             worksheet.write("A1","RANK")
             worksheet.write("B1","USER-NAME")
             worksheet.write("C1","SCORE")
-
             raw_file = open(f"temp_files/{fileName}","r")
-            print(fileName,raw_file)
             soup = BeautifulSoup(raw_file,"lxml")
             ranks_list = soup.find_all("tr")
             lineNum = 2
@@ -26,7 +25,6 @@ class Scrapper:
                 lis = []
                 for td in td_lis[:3]:
                     td.div.unwrap()
-                    print(td.text)
                     if "Rank" in td.text:
                         lis.append(td.text[4:])
                     elif "Username" in td.text:
