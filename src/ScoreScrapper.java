@@ -94,7 +94,7 @@ public class ScoreScrapper extends Thread{
         driv.switchTo().window(wid.get(1));
         Thread.sleep(2000);
         // Selecting the filte button and clicking it 
-        WebElement filterByBtn = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"root\"]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]")));
+        WebElement filterByBtn = driverWait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[1]/div/div/div[2]/div[2]/div/div")));
         driverWait.until(ExpectedConditions.elementToBeClickable(filterByBtn));
         filterByBtn.click();
         Thread.sleep(2000);
@@ -118,7 +118,8 @@ public class ScoreScrapper extends Thread{
         act.click().build().perform();
         Thread.sleep(1000);
         // Select and click on the Apply button to apply the filters.
-        WebElement filterApplyBtn = driv.findElement(By.className("_apply_button_uhw2a_84"));
+        WebElement filterApplyBtn = driv.findElement(By.xpath("/html/body/div[1]/div/div[3]/div/div/div[2]/div[1]/div/div/div[4]/button"));
+        Thread.sleep(3000);
         // In some cases the desired filter is not applciable for a Division so the Apply button will remain 
         // Disabled, we check this and make our move accordingly.
         if(!(filterApplyBtn.isEnabled())){
@@ -181,18 +182,18 @@ public class ScoreScrapper extends Thread{
     }
     public static void main(String[] args) throws Exception{
         // Link to be visited
-        String link = "https://www.codechef.com/START100";
+        String link = "https://www.codechef.com/START99";
 
         // Create four different Threads for each Division in CodeChef.
 
-        // ScoreScrapper t1 = new ScoreScrapper("div-1",link);
+        ScoreScrapper t1 = new ScoreScrapper("div-1",link);
         ScoreScrapper t2 = new ScoreScrapper("div-2",link);
         ScoreScrapper t3 = new ScoreScrapper("div-3",link);
         ScoreScrapper t4 = new ScoreScrapper("div-4",link);
         // Start each Thread by a one second delay.
 
-        // Thread.sleep(1000);
-        // t1.start();
+        Thread.sleep(1000);
+        t1.start();
         Thread.sleep(1000);
         t2.start();
         Thread.sleep(1000);
