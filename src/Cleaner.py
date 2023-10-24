@@ -19,7 +19,8 @@ class Cleaner:
         os.chdir(self.temp_path)
         lis = os.listdir()
         for file in lis:
-            os.system(f"del {file}")
+            if "div" in file:
+                os.system(f"del {file}")
         print("------------CLEANING FINISHED------------")
 
 obj = Cleaner()

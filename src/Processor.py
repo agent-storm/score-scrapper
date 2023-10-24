@@ -18,6 +18,8 @@ class Scrapper:
         os.chdir("output-files")
         # for every raw_html file we do the following actions.
         for fileName in self.list_of_files:
+            if fileName == "Readme.txt":
+                continue
             #Get the respective name of the file by calling FileNameGetter() method
             newName = self.FileNameGetter(fileName)
             # Create a new xlsx file
