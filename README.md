@@ -26,13 +26,16 @@ Step by Step detailed explaination of the working can be found with in the code 
 ### Dependency
 - Chrome Driver (Recommended)   ->[Downlaod](https://googlechromelabs.github.io/chrome-for-testing/)
 - Selenium Server v4.0 or above ->[Download](https://www.selenium.dev/downloads/)
+
 ### Python Requirements
 - Beautiful Soup              ->`pip install beautifulsoup4`
 - xlsxwriter                  ->`pip install xlsxwriter`
+- lxml parser                 ->`pip install lxml`
+  
 ## How to use:
 &ensp;&ensp;For now there is no interactive method for using the program but in the future I will add a GUI Interface to make things simple and easy to use. To use the programm as is, you need to go to the main method in the ScoreScrapper.java file and edit the `link` variable to the desired link that only points any START contest ex: `https://codechef.com/START99`
 ## NOTICE
-&ensp;&ensp;You must add the selenium server jar file to the "Referenced Libraries" folder of your Java project.
+&ensp;&ensp;You must add the selenium server jar file to the "Referenced Libraries" folder of your Java project (VS code), or add it the the "java build path" in Eclipse.
 
 ## Folder Structure
 
